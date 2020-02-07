@@ -170,8 +170,25 @@ defmodule ExJsonSchema.Validator do
     end
   end
 
+  defp validate_aspect(_, _, {"type", type}, nil), do: []
+
   defp validate_aspect(_, _, {"type", type}, data) do
     Type.validate(type, data)
+  end
+
+  defp validate_aspect(_, _, {"x-nullable", nullable}, data) do
+    case {nullable, data} do
+      {false, nil} ->
+        [
+          %Error{
+            error: %Error.Type{expected: "Not Null", actual: "Null"},
+            path: ""
+          }
+        ]
+
+      _ ->
+        []
+    end
   end
 
   defp validate_aspect(root, schema, {"properties", _}, data = %{}) do
