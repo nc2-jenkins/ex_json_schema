@@ -170,7 +170,7 @@ defmodule ExJsonSchema.Validator do
     end
   end
 
-  defp validate_aspect(_, _, {"type", type}, nil), do: []
+  defp validate_aspect(_, _, {"type", _type}, nil), do: []
 
   defp validate_aspect(_, _, {"type", type}, data) do
     Type.validate(type, data)
